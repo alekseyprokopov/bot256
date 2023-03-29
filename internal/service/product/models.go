@@ -1,4 +1,4 @@
-package main
+package product
 
 var allProducts = []Product{
 	{Name: "one"},

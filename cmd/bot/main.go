@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/alekseyprokopov/bot256/internal/service/product"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/joho/godotenv"
 	"log"
@@ -10,7 +11,7 @@ import (
 func main() {
 	godotenv.Load()
 	t := os.Getenv("TOKEN")
-	productService := product
+	productService := product.NewService()
 
 	bot, err := tgbotapi.NewBotAPI(t)
 	if err != nil {
@@ -38,9 +39,9 @@ func main() {
 		case "help":
 			helpCmd(bot, update.Message)
 		case "list":
-			listCmd()
+			listCmd(bot, update.Message, productService)
 		default:
-			defCmd()
+			defCmd(bot, update.Message)
 		}
 
 		log.Printf("[FROM: %s],TEXT: %s", update.Message.From.UserName, update.Message.Text)
@@ -58,8 +59,23 @@ func helpCmd(bot *tgbotapi.BotAPI, inputMessage *tgbotapi.Message) {
 	bot.Send(msg)
 }
 
-func listCmd(bot *tgbotapi.BotAPI, inputMessage *tgbotapi.Message, productService *.Service){
+func listCmd(bot *tgbotapi.BotAPI, inputMessage *tgbotapi.Message, productService *product.Service){
 	text:= "all products: \n"
-	products := productService
+	products := productService.List()
 
+	for _, item := range products{
+		text+= item.Name
+	}
+
+	msg := tgbotapi.NewMessage(inputMessage.Chat.ID, text)
+	bot.Send(msg)
+
+}
+
+
+func defCmd(bot *tgbotapi.BotAPI, inputMessage *tgbotapi.Message) {
+	text := "/help - help\n" +
+		"/list - list products"
+	msg := tgbotapi.NewMessage(inputMessage.Chat.ID, text)
+	bot.Send(msg)
 }
