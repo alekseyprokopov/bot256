@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/alekseyprokopov/bot256/internal/app/commands"
+	"github.com/alekseyprokopov/bot256/internal/app/commander"
 	"github.com/alekseyprokopov/bot256/internal/service/product"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/joho/godotenv"
@@ -30,7 +30,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-	commander := commands.New(bot, productService)
+	commander := commander.New(bot, productService)
 
 	for update := range updates {
 		if update.Message == nil {

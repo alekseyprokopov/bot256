@@ -1,4 +1,4 @@
-package commands
+package commander
 
 import (
 	"github.com/alekseyprokopov/bot256/internal/service/product"
@@ -9,6 +9,8 @@ type Commander struct {
 	Bot            *tgbotapi.BotAPI
 	ProductService *product.Service
 }
+
+
 
 func New(bot *tgbotapi.BotAPI, service *product.Service) *Commander {
 	return &Commander{
