@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/alekseyprokopov/bot256/internal/app/commander"
+	"github.com/alekseyprokopov/bot256/internal/app/router"
 	"github.com/alekseyprokopov/bot256/internal/service/product"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/joho/godotenv"
@@ -31,23 +32,10 @@ func main() {
 		log.Panic(err)
 	}
 	commander := commander.New(bot, productService)
+	r := router.New(commander, productService)
 
 	for update := range updates {
-		if update.Message == nil {
-			continue
-		}
-
-		switch update.Message.Command() {
-		case "help":
-			commander.HelpCmd(update.Message)
-		case "list":
-			commander.ListCmd(update.Message)
-		default:
-			commander.DefCmd(update.Message)
-		}
-
-		log.Printf("[FROM: %s],TEXT: %s", update.Message.From.UserName, update.Message.Text)
-
+		r.HandleUpdate(update)
 	}
 
 }
