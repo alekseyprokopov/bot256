@@ -1,4 +1,4 @@
-package commander
+package product
 
 import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
@@ -6,9 +6,9 @@ import (
 
 func (c *Commander) ListCmd(inputMessage *tgbotapi.Message) {
 	text := "all products: \n"
-	products := c.ProductService.List()
+	products, _ := c.ProductService.List(0, 10)
 
-	for _, item := range products {
+	for _, item := range *products {
 		text += item.Name + "\n"
 	}
 

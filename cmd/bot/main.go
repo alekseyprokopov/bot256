@@ -1,9 +1,7 @@
 package main
 
 import (
-	"github.com/alekseyprokopov/bot256/internal/app/commander"
 	"github.com/alekseyprokopov/bot256/internal/app/router"
-	"github.com/alekseyprokopov/bot256/internal/service/product"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/joho/godotenv"
 	"log"
@@ -11,14 +9,20 @@ import (
 )
 
 func main() {
-	godotenv.Load()
-	t := os.Getenv("TOKEN")
+	_ = godotenv.Load()
 
-	productService := product.NewService()
-	bot, err := tgbotapi.NewBotAPI(t)
+	token, found := os.LookupEnv("TOKEN")
+
+	if !found {
+		log.Panic("environment variable TOKEN not found in .env")
+	}
+
+	bot, err := tgbotapi.NewBotAPI(token)
 	if err != nil {
 		log.Panic(err)
 	}
+
+	//
 	bot.Debug = true
 
 	log.Printf("Authorized on account: %s", bot.Self.UserName)
@@ -31,8 +35,8 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-	commander := commander.New(bot, productService)
-	r := router.New(commander, productService)
+
+	r := router.New(bot)
 
 	for update := range updates {
 		r.HandleUpdate(update)
