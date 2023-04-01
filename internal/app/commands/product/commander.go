@@ -7,12 +7,25 @@ import (
 	"log"
 )
 
+type ProductCommander interface {
+	Help(message *tgbotapi.Message)
+	Get(message *tgbotapi.Message)
+	List(message *tgbotapi.Message)
+	Delete(message *tgbotapi.Message)
+
+	New(message *tgbotapi.Message)
+	Edit(message *tgbotapi.Message)
+
+	HandleCommand(message *tgbotapi.Message, commandPath path.CommandPath)
+	HandleCallback(callback *tgbotapi.CallbackQuery, callbackPath path.CallbackPath)
+}
+
 type Commander struct {
 	Bot            *tgbotapi.BotAPI
 	ProductService *product.Service
 }
 
-func New(bot *tgbotapi.BotAPI, service *product.Service) *Commander {
+func NewProductCommander(bot *tgbotapi.BotAPI, service *product.Service) ProductCommander {
 	return &Commander{
 		Bot:            bot,
 		ProductService: service,
@@ -24,19 +37,19 @@ func (c *Commander) HandleCommand(message *tgbotapi.Message, commandPath path.Co
 	//commandPath.CommandName
 	switch commandPath.CommandName {
 	case "help":
-		c.HelpCmd(message)
+		c.Help(message)
 	case "list":
-		c.ListCmd(message)
+		c.List(message)
 	default:
-		c.DefCmd(message)
+		c.Default(message)
 	case "get":
-		c.getCmd(message)
+		c.Get(message)
 	case "new":
-		c.newCmd(message)
+		c.New(message)
 	case "delete":
-		c.deleteCmd(message)
+		c.Delete(message)
 	case "edit":
-		c.editCmd(message)
+		c.Edit(message)
 	}
 }
 

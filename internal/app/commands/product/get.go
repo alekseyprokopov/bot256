@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func (c *Commander) getCmd(message *tgbotapi.Message) {
+func (c *Commander) Get(message *tgbotapi.Message) {
 	args := message.CommandArguments()
 	id, err := strconv.Atoi(args)
 	if err != nil {

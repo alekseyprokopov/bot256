@@ -18,7 +18,7 @@ type Storage interface {
 
 type Router struct {
 	bot     *tgbotapi.BotAPI
-	product Commander
+	product product.ProductCommander
 }
 type Commander interface {
 	HandleCallback(callback *tgbotapi.CallbackQuery, callbackPath path.CallbackPath)
@@ -28,7 +28,7 @@ type Commander interface {
 func New(bot *tgbotapi.BotAPI) *Router {
 	return &Router{
 		bot:     bot,
-		product: product.New(bot, product2.NewService()),
+		product: product.NewProductCommander(bot, product2.NewService()),
 	}
 }
 

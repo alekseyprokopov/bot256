@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func (c *Commander) newCmd(message *tgbotapi.Message) {
+func (c *Commander) New(message *tgbotapi.Message) {
 	args := message.CommandArguments()
 	id, err := strconv.Atoi(args)
 	if err != nil {

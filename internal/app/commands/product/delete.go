@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func (c *Commander) deleteCmd(message *tgbotapi.Message) {
+func (c *Commander) Delete(message *tgbotapi.Message) {
 	args := message.CommandArguments()
 	id, err := strconv.Atoi(args)
 	if err != nil {
