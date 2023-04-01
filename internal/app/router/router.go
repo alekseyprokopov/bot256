@@ -38,9 +38,9 @@ func (r *Router) HandleUpdate(update tgbotapi.Update) {
 			log.Printf("recovered from panic: %v\n%v", panicValue, string(debug.Stack()))
 		}
 	}()
-
 	switch {
 	case update.CallbackQuery != nil:
+		log.Print("CALLBACK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 		r.handleCallback(update.CallbackQuery)
 	case update.Message != nil:
 		r.handleMessage(update.Message)

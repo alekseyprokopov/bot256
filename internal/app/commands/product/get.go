@@ -6,20 +6,21 @@ import (
 	"strconv"
 )
 
-func (c *Commander) getCmd(callback *tgbotapi.CallbackQuery, data string) {
-	id, err := strconv.Atoi(data)
+func (c *Commander) getCmd(message *tgbotapi.Message) {
+	args := message.CommandArguments()
+	id, err := strconv.Atoi(args)
 	if err != nil {
-		msg := tgbotapi.NewMessage(callback.Message.Chat.ID, "can't get index: "+data)
+		msg := tgbotapi.NewMessage(message.Chat.ID, "can't get index: "+args)
 		c.Bot.Send(msg)
 		return
 	}
 
 	product, err := c.ProductService.Get(int64(id))
 	if err != nil {
-		msg := tgbotapi.NewMessage(callback.Message.Chat.ID, "can't get product: "+string(id))
+		msg := tgbotapi.NewMessage(message.Chat.ID, "can't get product: "+string(id))
 		c.Bot.Send(msg)
 		return
 	}
-	msg := tgbotapi.NewMessage(callback.Message.Chat.ID, fmt.Sprintf("Product: %+v", product))
+	msg := tgbotapi.NewMessage(message.Chat.ID, fmt.Sprintf("Product: %+v", product))
 	c.Bot.Send(msg)
 }

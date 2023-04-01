@@ -29,19 +29,21 @@ func (c *Commander) HandleCommand(message *tgbotapi.Message, commandPath path.Co
 		c.ListCmd(message)
 	default:
 		c.DefCmd(message)
+	case "get":
+		c.getCmd(message)
+	case "new":
+		c.newCmd(message)
+	case "delete":
+		c.deleteCmd(message)
+	case "edit":
+		c.editCmd(message)
 	}
 }
 
 func (c *Commander) HandleCallback(callback *tgbotapi.CallbackQuery, callbackPath path.CallbackPath) {
+	log.Printf("name: ", callbackPath.CallbackName)
 	switch callbackPath.CallbackName {
-	case "get":
-		c.getCmd(callback, callbackPath.CallbackData)
-	case "new":
-		c.newCmd(callback, callbackPath.CallbackData)
-	case "delete":
-		c.deleteCmd(callback, callbackPath.CallbackData)
-	case "edit":
-		c.editCmd(callback, callbackPath.CallbackData)
+
 	default:
 
 	}
