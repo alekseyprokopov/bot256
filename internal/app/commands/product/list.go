@@ -5,7 +5,7 @@ import (
 )
 
 func (c *Commander) List(message *tgbotapi.Message) {
-	text := "all products: \n\n"
+	text := "list of all products: \n\n"
 	products, _ := c.ProductService.List(0, 10)
 
 	for _, item := range *products {
